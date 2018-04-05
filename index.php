@@ -89,14 +89,19 @@ require_once './classes/ImgDim.php';
 //            $img->setDstFileName(ImgDim::FILENAME_RANDOM, 'thm_');
 //            $img->setDstDimensions(ImgDim::DIMENSION_AUTO, 100);
 //            $img->setDstCompressionLevel(100);
-//            $img->create();
+//            $img->excute();
 //            
             
             $img = new ImgDim();
             $img->setSrcFolder('./images/src/');
             $img->setSrcFileNamePattern('*');
             $img->setSrcFileTypes(['jpg', 'jpeg', 'png']);
-            $images = $img->find();
+//            $images = $img->find();
+            $img->setDstFolder('./images/dst/');
+            $img->setDstFileName(ImgDim::FILENAME_RANDOM, 'thm_');
+            $img->setDstDimensions(ImgDim::DIMENSION_AUTO, 100);
+            $img->setDstCompressionLevel(100);
+            $img->excute();
             ?>
             <table>
                 <thead>
@@ -121,7 +126,7 @@ require_once './classes/ImgDim.php';
         </div>
         <pre>
 <?php
-var_dump($images);
+//var_dump($images);
 ?>
         </pre>
         

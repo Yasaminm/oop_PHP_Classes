@@ -52,15 +52,27 @@ class ImgDim {
     public function setDstCompressionLevel(int $level) {
         $this->dstCompressionLevel = ($level >= 0 && $level <= 100) ? $level: 75;
     }
-    public function create($param) {
+    public function excute() {
         
-        
+        $srcPaths = $this->find();
+        foreach ($srcPaths as $srcPath) {
+            $srcType = $this->getImageFileType($srcPath);
+            echo $srcType . '<br>';
+        }
     }
     public function find() {
         
       $path = sprintf('%s%s.{%s}',$this->srcPath,$this->srcFileName,$this->srcFileTypes );
         return glob($path, GLOB_BRACE);
     }
+    private function getImageFileType($path) {
+    $types = ['', 'gif', 'jpeg', 'png'];
+    $type = getimagesize($path)[2];
+    if ($type > 0 && $type < 4) {
+        return $types[$type];
+    }
+    return false;
+}
     
 }
  
