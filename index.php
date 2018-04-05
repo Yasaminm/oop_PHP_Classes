@@ -49,15 +49,34 @@ require_once './classes/FileManager.php';
             ?>
             
                <?php 
-            $file = new FileManager('./import/cities.csv');
-            $check = $file->exists();
-            $data = $file->CSV2Array();
-//            print_r($data);
-//            $file->delete();
-//            var_dump($file);
+//            $file = new FileManager('./import/cities.csv');
+//            $check = $file->exists();
+//            $data = $file->CSV2Array();
+////            print_r($data);
+////            $file->delete();
+////            var_dump($file);
+//            
+//            $file1 = new FileManager('./export/cities.csv');
+//            $file1->array2CSV($data, '|');
+            ?>
             
-            $file1 = new FileManager('./export/cities.csv');
-            $file1->array2CSV($data, '|');
+            <?php 
+//            $imagespath = new FileManager('');
+////            $allFiles = $imagesphat->getFiles('./assets/originals/', jpg');
+//            $allFiles = $imagespath->getFiles('./assets/originals/', ['jpg', 'jpeg', 'png']);
+//            $files = FileManager::getFiles('./assets/originals/', ['jpg', 'jpeg', 'png', 'csv']);
+//            
+            ?>
+            
+            <?php 
+//            $f = new FileManager('./assets/originals/cities.csv');
+//            $handle = $f->openFile(FileManager::READONLY);
+//            FileManager::createFile('./export/test2.txt');
+            ?>
+            
+            <?php 
+            $f = new FileManager('./export/test6.txt');
+//            FileManager::deleteFiles('./export/', 'txt')
             ?>
             <table>
                 <thead>
@@ -82,6 +101,7 @@ require_once './classes/FileManager.php';
         </div>
         <pre>
 <?php
+//var_dump($files);
 ?>
         </pre>
         
