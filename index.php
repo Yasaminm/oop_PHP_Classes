@@ -2,6 +2,7 @@
 require_once './classes/Product.php';
 require_once './classes/Katze.php';
 require_once './classes/FileManager.php';
+require_once './classes/ImgDim.php';
 
 ?>
 <!DOCTYPE html>
@@ -75,8 +76,27 @@ require_once './classes/FileManager.php';
             ?>
             
             <?php 
-            $f = new FileManager('./export/test6.txt');
+//            $f = new FileManager('./export/test6.txt');
 //            FileManager::deleteFiles('./export/', 'txt')
+            ?>
+            <?php 
+            
+//            $img = new ImgDim();
+//            $img->setSrcFolder('./image/src/');
+//            $img->setSrcFileNamePattern('*');
+//            $img->setSrcFileTypes(['jpg', 'jpeg', 'png']);
+//            $img->setDstFolder('./image/dst/');
+//            $img->setDstFileName(ImgDim::FILENAME_RANDOM, 'thm_');
+//            $img->setDstDimensions(ImgDim::DIMENSION_AUTO, 100);
+//            $img->setDstCompressionLevel(100);
+//            $img->create();
+//            
+            
+            $img = new ImgDim();
+            $img->setSrcFolder('./images/src/');
+            $img->setSrcFileNamePattern('*');
+            $img->setSrcFileTypes(['jpg', 'jpeg', 'png']);
+            $images = $img->find();
             ?>
             <table>
                 <thead>
@@ -101,7 +121,7 @@ require_once './classes/FileManager.php';
         </div>
         <pre>
 <?php
-//var_dump($files);
+var_dump($images);
 ?>
         </pre>
         
