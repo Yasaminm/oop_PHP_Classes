@@ -129,14 +129,19 @@ class ImgDim {
     }
     private function save($dstImg, $filetype, $dstFileName) {
         
-        
+        $compr = $this->dstCompressionLevel;
         if($filetype === 'jpeg'){
     $dstPath = $this->dstPath. $dstFileName. '.' .$filetype;
-    imagejpeg($dstImg, $dstPath, $this->dstCompressionLevel);
+    imagejpeg($dstImg, $dstPath, $compr);
 }elseif ($filetype === 'png'){
     $dstPath = $this->dstPath. $dstFileName. '.' .$filetype;
-    imagepng($dstImg, $dstPath, $this->dstCompressionLevel);
-}else{
+    $compr = ($compr === 100) ? ($compr / 10) -1 : Inval($compr / 10);
+    imagepng($dstImg, $dstPath, $compr);
+}elseif ($filetype === 'gif') {
+       $dstPath = $this->dstPath. $dstFileName. '.' .'png';
+    $compr = ($compr === 100) ? ($compr / 10) -1 : Inval($compr / 10);
+    imagepng($dstImg, $dstPath, $compr);     
+        }else{
     return false;
 
     }
