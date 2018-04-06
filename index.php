@@ -126,7 +126,7 @@ require_once './classes/ImgDim.php';
         </div>
         <pre>
 <?php
-//var_dump($images);
+var_dump($img);
 ?>
         </pre>
         

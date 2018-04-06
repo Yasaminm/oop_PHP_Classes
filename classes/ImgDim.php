@@ -41,6 +41,28 @@ class ImgDim {
     public function setDstFolder(string $dstPath) {
         $this->dstPath = $dstPath;
     }
+    
+    private function generateDstFileName($nameType, $namePrefix = ' ', $srcPath = ' ', $index = ' ') {
+        $n = ' ';
+        switch ($nameType) {
+            case 1://original name
+                $n = $namePrefix.pathinfo($srcPath)['filename'];
+
+                break;
+            case 2: //Random
+                $n = ImgDim::getRandName($namePrefix);
+
+                break;
+
+            case 3://index/Zahl
+                $n = $namePrefix.$index;
+
+                break;
+            default:
+                $n = $namePrefix.pathinfo($srcPath)['filename'];
+        }
+        return $n;
+    }
     public function setDstFileName(int $type, string $prefix = '') {
         $this->dstFileNameType = $type;
         $this->dstFileNamePrefix = $prefix;
@@ -74,6 +96,10 @@ class ImgDim {
         $this->dstCompressionLevel = ($level >= 0 && $level <= 100) ? $level: 75;
     }
     
+    private function getRandName($prefix = ''){
+   
+    return str_replace('.','_',uniqid($prefix, true));
+}
 
     public function excute() {
         
@@ -82,6 +108,7 @@ class ImgDim {
             $srcType = $this->getImageFileType($srcPath);
 //            echo $srcType . '<br>';
             $this->calcDstDimensions($this->dstFileWidth, $this->dstFileHeight, $srcPath);
+            $this->generateDstFileName($this->dstFileNameType, $this->dstFileNamePrefix, $srcPath, $index);
         }
     }
     public function find() {
