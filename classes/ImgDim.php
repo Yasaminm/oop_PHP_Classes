@@ -45,19 +45,43 @@ class ImgDim {
         $this->dstFileNameType = $type;
         $this->dstFileNamePrefix = $prefix;
     }
-    public function setDstDimensions(int $width , int $height) {
+    public function setDstDimensions(int $width = 0 , int $height = 0) {
         $this->dstFileWidth = $width;
         $this->dstFileHeight = $height;
     }
+    private function calcDstDimensions(int $w, int $h, string $path) {
+        $info = getimagesize($path);//Breite: $info[0] Höhe: $info[1]
+        if($w > 0 && $h > 0){
+        $this->dstFileWidth = $w;
+        $this->dstFileHeight = $h;
+        }elseif ($w === 0 && $h === 0 ) {
+            $this->dstFileWidth = $info[0];
+            $this->dstFileHeight = $info[1];
+        }elseif($w > 0 && $h === 0){
+            $this->dstFileWidth = $w;
+            $this->dstFileHeight = $this->calcDimension($info[0], $info[1], $w);
+        } else {
+            $this->dstFileWidth = $this->calcDimension($info[1], $info[0], $h);
+            $this->dstFileHeight = $h;
+        }
+    }
+    private function calcDimension($x1,$y1,$x2){
+    $y2 = $y1 * $x2 / $x1;
+    return $y2;
+}
+
     public function setDstCompressionLevel(int $level) {
         $this->dstCompressionLevel = ($level >= 0 && $level <= 100) ? $level: 75;
     }
+    
+
     public function excute() {
         
         $srcPaths = $this->find();
-        foreach ($srcPaths as $srcPath) {
+        foreach ($srcPaths as $index => $srcPath) {
             $srcType = $this->getImageFileType($srcPath);
-            echo $srcType . '<br>';
+//            echo $srcType . '<br>';
+            $this->calcDstDimensions($this->dstFileWidth, $this->dstFileHeight, $srcPath);
         }
     }
     public function find() {
@@ -65,6 +89,7 @@ class ImgDim {
       $path = sprintf('%s%s.{%s}',$this->srcPath,$this->srcFileName,$this->srcFileTypes );
         return glob($path, GLOB_BRACE);
     }
+    
     private function getImageFileType($path) {
     $types = ['', 'gif', 'jpeg', 'png'];
     $type = getimagesize($path)[2];
