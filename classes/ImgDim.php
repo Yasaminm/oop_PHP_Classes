@@ -86,6 +86,7 @@ class ImgDim {
             $this->dstFileWidth = $this->calcDimension($info[1], $info[0], $h);
             $this->dstFileHeight = $h;
         }
+        return [$this->dstFileWidth, $this->dstFileHeight];
     }
     private function calcDimension($x1,$y1,$x2){
     $y2 = $y1 * $x2 / $x1;
@@ -102,15 +103,46 @@ class ImgDim {
 }
 
     public function excute() {
-        
+        $cons = [];
         $srcPaths = $this->find();
         foreach ($srcPaths as $index => $srcPath) {
-            $srcType = $this->getImageFileType($srcPath);
+           $cons[] = $srcType = $this->getImageFileType($srcPath);
 //            echo $srcType . '<br>';
-            $this->calcDstDimensions($this->dstFileWidth, $this->dstFileHeight, $srcPath);
-            $this->generateDstFileName($this->dstFileNameType, $this->dstFileNamePrefix, $srcPath, $index);
+          $cons[] =  $this->calcDstDimensions($this->dstFileWidth, $this->dstFileHeight, $srcPath);
+           $cons[] = $dstFileName = $this->generateDstFileName($this->dstFileNameType, $this->dstFileNamePrefix, $srcPath, $index);
+          $cons[] = $dstImg = $this->resample($srcPath);
+         $cons[] = $dstPath =  $this->save($dstImg, $srcType, $dstFileName);
+           
         }
+        return $cons;
     }
+    
+    private function resample($srcPath) {
+        $srcImgInfo = $this->getGdImage($srcPath);
+        $srcImg = $srcImgInfo[0];
+        $srcW = $srcImgInfo[1];
+        $srcH = $srcImgInfo[2];
+        $dstImg = imagecreatetruecolor($this->dstFileWidth, $this->dstFileHeight);
+        imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $this->dstFileWidth, $this->dstFileHeight, $srcW, $srcH);
+        
+        return $dstImg;
+    }
+    private function save($dstImg, $filetype, $dstFileName) {
+        
+        
+        if($filetype === 'jpeg'){
+    $dstPath = $this->dstPath. $dstFileName. '.' .$filetype;
+    imagejpeg($dstImg, $dstPath, $this->dstCompressionLevel);
+}elseif ($filetype === 'png'){
+    $dstPath = $this->dstPath. $dstFileName. '.' .$filetype;
+    imagepng($dstImg, $dstPath, $this->dstCompressionLevel);
+}else{
+    return false;
+
+    }
+    return $dstPath;
+}
+    
     public function find() {
         
       $path = sprintf('%s%s.{%s}',$this->srcPath,$this->srcFileName,$this->srcFileTypes );
@@ -124,6 +156,30 @@ class ImgDim {
         return $types[$type];
     }
     return false;
+}
+
+private function getGdImage($path){
+   $info = getimagesize($path);
+   $img = false;
+   switch($info[2]){
+       case 1:
+           $img = imagecreatefromgif($path);
+        break;
+    case 2:
+           $img = imagecreatefromjpeg($path);
+        break;
+
+    case 3:
+           $img = imagecreatefrompng($path);
+        break;
+    
+    default:
+           $img = false;
+        break;
+   }
+    
+    return [$img, $info[0], $info[1], $info[2]];
+    
 }
     
 }

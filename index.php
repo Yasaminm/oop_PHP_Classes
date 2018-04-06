@@ -98,10 +98,10 @@ require_once './classes/ImgDim.php';
             $img->setSrcFileTypes(['jpg', 'jpeg', 'png']);
 //            $images = $img->find();
             $img->setDstFolder('./images/dst/');
-            $img->setDstFileName(ImgDim::FILENAME_RANDOM, 'thm_');
-            $img->setDstDimensions(ImgDim::DIMENSION_AUTO, 100);
+            $img->setDstFileName(ImgDim::FILENAME_ORIGIN, 'thmb_');
+            $img->setDstDimensions(200, 100);
             $img->setDstCompressionLevel(100);
-            $img->excute();
+            $cons = $img->excute();
             ?>
             <table>
                 <thead>
@@ -126,7 +126,7 @@ require_once './classes/ImgDim.php';
         </div>
         <pre>
 <?php
-var_dump($img);
+var_dump($cons);
 ?>
         </pre>
         
