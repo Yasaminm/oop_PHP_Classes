@@ -81,16 +81,10 @@ require_once './classes/ImgDim.php';
             ?>
             <?php 
             
-//            $img = new ImgDim();
-//            $img->setSrcFolder('./image/src/');
-//            $img->setSrcFileNamePattern('*');
-//            $img->setSrcFileTypes(['jpg', 'jpeg', 'png']);
-//            $img->setDstFolder('./image/dst/');
-//            $img->setDstFileName(ImgDim::FILENAME_RANDOM, 'thm_');
-//            $img->setDstDimensions(ImgDim::DIMENSION_AUTO, 100);
-//            $img->setDstCompressionLevel(100);
-//            $img->excute();
-//            
+            // $cons is set as array in excute method to test the project in between.
+            //two way use of ImgDim class. one way is to set the values in related methods. the second
+            //way is to set some values direct in ImgDim method.
+            //setDstCompressionLevel() method is optional to set resolution.
             
             $img = new ImgDim('./images/src/', './images/dst/', '*', ['jpg', 'jpeg', 'png']);
 //            $img->setSrcFolder('./images/src/');
@@ -98,7 +92,7 @@ require_once './classes/ImgDim.php';
 //            $img->setSrcFileTypes(['jpg', 'jpeg', 'png']);
 //            $img->setDstFolder('./images/dst/');
             $img->setDstFileName(ImgDim::FILENAME_NUM, 'thmb_');
-            $img->setDstDimensions(200, 100);
+            $img->setDstDimensions(200, ImgDim::DIMENSION_AUTO);
 //            $img->setDstCompressionLevel(100);
             $cons = $img->excute();
             ?>
