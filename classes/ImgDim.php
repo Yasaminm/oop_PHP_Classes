@@ -6,6 +6,9 @@ class ImgDim {
     const FILENAME_RANDOM = 2;
     const FILENAME_NUM = 3;
     const DIMENSION_AUTO = 0;
+    const COMPRESSION_DEFAULT_LEVEL = 75;
+
+
     private $srcPath = '';
     private $dstPath = '';
     private $srcFileName = '*';
@@ -14,7 +17,7 @@ class ImgDim {
     private $dstFileNamePrefix;
     private $dstFileWidth;
     private $dstFileHeight;
-    private $dstCompressionLevel;
+    private $dstCompressionLevel = self::COMPRESSION_DEFAULT_LEVEL;
 
 //$srcPath, $dstPath, $srcFileName, $extension
     public function __construct(string $srcPath = ' ', string $dstPath = ' ', string $srcName = '*', array $srcFileTypes = [ ]) {
@@ -93,8 +96,8 @@ class ImgDim {
     return $y2;
 }
 
-    public function setDstCompressionLevel(int $level) {
-        $this->dstCompressionLevel = ($level >= 0 && $level <= 100) ? $level: 75;
+    public function setDstCompressionLevel(int $level = self::COMPRESSION_DEFAULT_LEVEL) {
+        $this->dstCompressionLevel = ($level >= 0 && $level <= 100) ? $level: self::COMPRESSION_DEFAULT_LEVEL;
     }
     
     private function getRandName($prefix = ''){
@@ -135,11 +138,11 @@ class ImgDim {
     imagejpeg($dstImg, $dstPath, $compr);
 }elseif ($filetype === 'png'){
     $dstPath = $this->dstPath. $dstFileName. '.' .$filetype;
-    $compr = ($compr === 100) ? ($compr / 10) -1 : Inval($compr / 10);
+    $compr = ($compr === 100) ? ($compr / 10) -1 : intval($compr / 10);
     imagepng($dstImg, $dstPath, $compr);
 }elseif ($filetype === 'gif') {
        $dstPath = $this->dstPath. $dstFileName. '.' .'png';
-    $compr = ($compr === 100) ? ($compr / 10) -1 : Inval($compr / 10);
+    $compr = ($compr === 100) ? ($compr / 10) -1 : intval($compr / 10);
     imagepng($dstImg, $dstPath, $compr);     
         }else{
     return false;

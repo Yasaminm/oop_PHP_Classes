@@ -92,15 +92,14 @@ require_once './classes/ImgDim.php';
 //            $img->excute();
 //            
             
-            $img = new ImgDim();
-            $img->setSrcFolder('./images/src/');
-            $img->setSrcFileNamePattern('*');
-            $img->setSrcFileTypes(['jpg', 'jpeg', 'png']);
-//            $images = $img->find();
-            $img->setDstFolder('./images/dst/');
+            $img = new ImgDim('./images/src/', './images/dst/', '*', ['jpg', 'jpeg', 'png']);
+//            $img->setSrcFolder('./images/src/');
+//            $img->setSrcFileNamePattern('*');
+//            $img->setSrcFileTypes(['jpg', 'jpeg', 'png']);
+//            $img->setDstFolder('./images/dst/');
             $img->setDstFileName(ImgDim::FILENAME_NUM, 'thmb_');
             $img->setDstDimensions(200, 100);
-            $img->setDstCompressionLevel(100);
+//            $img->setDstCompressionLevel(100);
             $cons = $img->excute();
             ?>
             <table>
